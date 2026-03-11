@@ -61,117 +61,92 @@ export default function Home() {
       <h1 className="text-3xl font-black text-gray-800 mb-0.5 tracking-tight">🎡 돌림판</h1>
       <p className="text-gray-400 text-sm mb-4">행운의 주인공은 누구?</p>
 
-      <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 items-center lg:items-start justify-center">
-        {/* Wheel — takes available space */}
-        <div className="flex-1 flex flex-col items-center min-w-0">
-          <SpinningWheel names={names} onWinner={setWinner} />
-        </div>
+      {/* Wheel */}
+      <SpinningWheel names={names} onWinner={setWinner} />
 
-        {/* Controls — fixed width sidebar */}
-        <div className="w-full lg:w-72 flex-shrink-0 flex flex-col gap-4">
-          {/* Name input */}
-          <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-3">
-            <label className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-              이름 입력
-            </label>
-            <textarea
-              value={inputText}
-              onChange={(e) => {
-                setInputText(e.target.value);
-                setMultiplier(1);
-              }}
-              rows={5}
-              placeholder="이름을 쉼표(,)로 구분해서 입력하세요&#10;예: 철수, 영희, 민준"
-              className="w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-            />
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-400">
-                {baseNames.length}명 입력됨 → 총 {names.length}칸
-              </span>
+      {/* Controls — horizontal row below wheel */}
+      <div className="w-full max-w-4xl mt-6 flex flex-col sm:flex-row gap-4 items-stretch">
+
+        {/* Name input */}
+        <div className="flex-[2] bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">이름 입력</label>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-gray-400">{baseNames.length}명 → 총 {names.length}칸</span>
               <button
-                onClick={() => {
-                  setInputText("");
-                  setMultiplier(1);
-                }}
+                onClick={() => { setInputText(""); setMultiplier(1); }}
                 className="text-xs text-red-400 hover:text-red-600 transition-colors"
               >
                 초기화
               </button>
             </div>
           </div>
+          <textarea
+            value={inputText}
+            onChange={(e) => { setInputText(e.target.value); setMultiplier(1); }}
+            rows={3}
+            placeholder="이름을 쉼표(,)로 구분해서 입력하세요 — 예: 철수, 영희, 민준"
+            className="w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+          />
+        </div>
 
-          {/* Multiplier */}
-          <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-3">
-            <label className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-              칸 늘리기
-            </label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMultiplier(m)}
-                  className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all duration-150
-                    ${multiplier === m
-                      ? "bg-purple-500 text-white shadow-md scale-105"
-                      : "bg-gray-100 text-gray-500 hover:bg-purple-100 hover:text-purple-600"
-                    }`}
-                >
-                  {m === 1 ? "기본" : `x${m}`}
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-gray-400">
-              이름을 반복해서 칸을 늘립니다 (당첨 확률 동일)
-            </p>
-          </div>
-
-          {/* Shuffle */}
-          <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-3">
-            <label className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-              순서 섞기
-            </label>
-            <div className="flex gap-2">
+        {/* Multiplier */}
+        <div className="flex-1 bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-2">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">칸 늘리기</label>
+          <div className="flex gap-1.5 flex-1">
+            {[1, 2, 3, 4, 5].map((m) => (
               <button
-                onClick={handleShuffleToggle}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all duration-150
-                  ${isShuffled
-                    ? "bg-orange-400 text-white shadow-md"
-                    : "bg-gray-100 text-gray-500 hover:bg-orange-100 hover:text-orange-500"
+                key={m}
+                onClick={() => setMultiplier(m)}
+                className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all duration-150
+                  ${multiplier === m
+                    ? "bg-purple-500 text-white shadow-md scale-105"
+                    : "bg-gray-100 text-gray-500 hover:bg-purple-100 hover:text-purple-600"
                   }`}
               >
-                {isShuffled ? "🔀 섞기 ON" : "🔀 섞기 OFF"}
+                {m === 1 ? "1x" : `x${m}`}
               </button>
-              {isShuffled && (
-                <button
-                  onClick={handleShuffle}
-                  className="px-4 py-2.5 rounded-xl text-sm font-bold bg-orange-100 text-orange-600 hover:bg-orange-200 transition-all"
-                >
-                  다시 섞기
-                </button>
-              )}
-            </div>
+            ))}
           </div>
-
-          {/* Name list preview */}
-          {names.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                현재 칸 목록
-              </label>
-              <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
-                {names.map((name, i) => (
-                  <span
-                    key={i}
-                    className="px-2.5 py-1 rounded-full text-xs font-medium text-white"
-                    style={{ background: `hsl(${(i * 37) % 360}, 65%, 55%)` }}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+          <p className="text-xs text-gray-400">이름 반복 (확률 동일)</p>
         </div>
+
+        {/* Shuffle + name tags */}
+        <div className="flex-1 bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-2">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">순서 섞기</label>
+          <div className="flex gap-2">
+            <button
+              onClick={handleShuffleToggle}
+              className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all duration-150
+                ${isShuffled
+                  ? "bg-orange-400 text-white shadow-md"
+                  : "bg-gray-100 text-gray-500 hover:bg-orange-100 hover:text-orange-500"
+                }`}
+            >
+              {isShuffled ? "🔀 ON" : "🔀 OFF"}
+            </button>
+            {isShuffled && (
+              <button
+                onClick={handleShuffle}
+                className="px-3 py-2 rounded-xl text-sm font-bold bg-orange-100 text-orange-600 hover:bg-orange-200 transition-all"
+              >
+                다시
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-1 overflow-y-auto max-h-16">
+            {names.map((name, i) => (
+              <span
+                key={i}
+                className="px-2 py-0.5 rounded-full text-xs font-medium text-white"
+                style={{ background: `hsl(${(i * 37) % 360}, 65%, 55%)` }}
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+
       </div>
 
       <WinnerModal winner={winner} onClose={() => setWinner(null)} />
