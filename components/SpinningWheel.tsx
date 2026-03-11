@@ -313,10 +313,10 @@ export default function SpinningWheel({ names, onWinner }: SpinningWheelProps) {
     <div className="relative flex flex-col items-center">
       <canvas
         ref={canvasRef}
-        width={460}
-        height={460}
+        width={600}
+        height={600}
         className="max-w-full"
-        style={{ maxWidth: "min(460px, 90vw)", height: "auto" }}
+        style={{ width: "min(600px, 90vw)", height: "auto" }}
       />
       <button
         onClick={spin}

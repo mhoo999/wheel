@@ -57,18 +57,18 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col items-center py-8 px-4">
-      <h1 className="text-4xl font-black text-gray-800 mb-1 tracking-tight">🎡 돌림판</h1>
-      <p className="text-gray-400 text-sm mb-8">행운의 주인공은 누구?</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col items-center py-6 px-4">
+      <h1 className="text-3xl font-black text-gray-800 mb-0.5 tracking-tight">🎡 돌림판</h1>
+      <p className="text-gray-400 text-sm mb-4">행운의 주인공은 누구?</p>
 
-      <div className="w-full max-w-5xl flex flex-col lg:flex-row gap-8 items-start justify-center">
-        {/* Wheel */}
-        <div className="flex-shrink-0 flex flex-col items-center">
+      <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 items-center lg:items-start justify-center">
+        {/* Wheel — takes available space */}
+        <div className="flex-1 flex flex-col items-center min-w-0">
           <SpinningWheel names={names} onWinner={setWinner} />
         </div>
 
-        {/* Controls */}
-        <div className="w-full lg:w-80 flex flex-col gap-5">
+        {/* Controls — fixed width sidebar */}
+        <div className="w-full lg:w-72 flex-shrink-0 flex flex-col gap-4">
           {/* Name input */}
           <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-3">
             <label className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
